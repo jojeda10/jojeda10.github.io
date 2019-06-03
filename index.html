@@ -71,15 +71,18 @@ function displayTracks(playlist) {
 function removeTrack(track) {
 
 
-   var params = {
+<!--    var params = {
     "tracks": [
         {
             "uri": track.currentTarget.uri,
             "positions": [0]
         }
     ]
-}
-
+ } -->
+ 
+ var params = new Object(); 
+params.tracks.uri = track.currentTarget.uri;
+params.tracks.positions = [0];
 
   $.ajax({
     url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks',
