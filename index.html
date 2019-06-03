@@ -68,11 +68,11 @@ function displayTracks(playlist) {
   });
 }
 
-function removeTrack(track, playlistId) {
+function removeTrack(track) {
 
 
   $.ajax({
-    url: 'https://api.spotify.com/v1/playlists/' + playlistId + '/tracks ',
+    url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks ',
 	type: 'DELETE',
 	postData: { tracks: track.currentTarget.uri },
     headers: {
