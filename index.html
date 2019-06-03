@@ -69,8 +69,8 @@ function createPlaylist() {
 	
   $.ajax({
     url: 'https://api.spotify.com/v1/users/' + encodeURIComponent(this._userId) + '/playlists',
-	data: JSON.stringify(params),
 	type: 'POST',
+	data: JSON.stringify(params),
 	dataType:'json',
     headers: {
       'Authorization': 'Bearer ' + this._accessToken,
