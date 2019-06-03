@@ -1,8 +1,18 @@
 <html>
 
-<!-- <body onload="initializeVariables()"> -->
+
 <body  onload="init()">
- <button onclick="getPlayLists()">Listar playlists</button> 
+
+ <form class="form-inline">
+  <div class="form-group">
+    <label for="email">Playlist name:</label>
+    <input type="email" class="form-control" id="email">
+  </div>
+  <button type="submit" class="btn btn-default">Create</button>
+</form> 
+
+
+<button onclick="getPlayLists()">Listar playlists</button> 
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script>
