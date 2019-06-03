@@ -27,7 +27,7 @@ window.location.hash = '';
 
 // Set token
 let _token = hash.access_token;
-this._accessToken = hash.access_token;
+
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 // Replace with your app's client ID, redirect URI and desired scopes
@@ -41,72 +41,11 @@ const scopes = [
 if (!_token) {
   window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
 }
-
-// Make a call using the token
-//$.ajax({
-//   url: "https://api.spotify.com/v1/me/top/artists",
-//   type: "GET",
-//   beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + _token );},
-//   success: function(data) { 
-//     // Do something with the returned data
-//    data.items.map(function(artist) {
- //      let item = $('<li>' + artist.name + '</li>');
- //      item.appendTo($('#top-artists'));
- //    });
- //  }
-//});
 }
 
 function initializeVariables() {
  this._client_id = '52f9e97b6df9462c9f239085ffb73145';
   this._client_secret = 'c6b9a2ca5d204d7983d4377566f9d8bf';
-}
-
-
-function login() {
-// Get the hash of the url
-const hash = window.location.hash
-.substring(1)
-.split('&')
-.reduce(function (initial, item) {
-  if (item) {
-    var parts = item.split('=');
-    initial[parts[0]] = decodeURIComponent(parts[1]);
-  }
-  return initial;
-}, {});
-window.location.hash = '';
-
-// Set token
-let _token = hash.access_token;
-
-const authEndpoint = 'https://accounts.spotify.com/authorize';
-
-// Replace with your app's client ID, redirect URI and desired scopes
-const clientId = '52f9e97b6df9462c9f239085ffb73145';
-const redirectUri = window.location.href;
-const scopes = [
-  'user-top-read'
-];
-
-// If there is no token, redirect to Spotify authorization
-if (!_token) {
-  window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
-}
-
-// Make a call using the token
-//$.ajax({
-//   url: "https://api.spotify.com/v1/me/top/artists",
-//   type: "GET",
-//   beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + _token );},
- //  success: function(data) { 
-//     // Do something with the returned data
-//     data.items.map(function(artist) {
- //      let item = $('<li>' + artist.name + '</li>');
- //      item.appendTo($('#top-artists'));
- //    });
-//   }
-//});
 }
 
 function getPlayLists() {
@@ -118,11 +57,43 @@ function getPlayLists() {
     },
     success: function(response) {
 	debugger;
-      //$(".recommendations").show();
-     // mapOverSongs(response.items);
+	 drawPlayListsTable(response.items);
     }
   });
 }
+
+drawPlayListsTable(PlayLists) {
+  debugger;
+    PlayLists.map( function(list) {
+	
+
+  var body = document.getElementsByTagName("body")[0];
+  var table   = document.createElement("table");
+  var tblBody = document.createElement("tbody");
+  
+
+  for (var i = 0; i < PlayLists.length; i++) {
+    var row = document.createElement("tr");
+ 
+    for (var j = 0; j < 2; j++) {
+      var cell = document.createElement("td");
+      var cellText = document.createTextNode("cell en la row "+i+", columna "+j);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    }
+ 
+    tblBody.appendChild(row);
+  }
+ 
+  table.appendChild(tblBody);
+  body.appendChild(table);
+  table.setAttribute("border", "2");  
+  
+    });
+}
+
+
+
 </script>
 </body>
 </html>
