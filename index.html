@@ -134,9 +134,13 @@ function drawPlayListsTable(PlayLists) {
 
 function drawTracksTable(Tracks, PlayListId) {
 
-  //  Tracks.map( function(list) {
+  var table = document.getElementById('TracksTable');
+  if (table) {
+  table.remove();
+  }
   var body = document.getElementsByTagName("body")[0];
-  var table   = document.createElement("table");
+  table   = document.createElement("table");
+  table.id = 'TracksTable';
   var tblBody = document.createElement("tbody");
 
   for (var i = 0; i < Tracks.length; i++) {
