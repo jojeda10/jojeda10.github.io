@@ -72,7 +72,7 @@ function createPlaylist() {
 	data: JSON.stringify(params),
 	dataType:'json',
     headers: {
-      'Authorization': 'Bearer ' + track.currentTarget.token,
+      'Authorization': 'Bearer ' + this._accessToken,
 	  'Content-Type': 'application/json'
     },
     success: function(response) {
