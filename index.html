@@ -11,8 +11,7 @@
 
 
 function init() {
-debugger;
-// Get the hash of the url
+
 const hash = window.location.hash
 .substring(1)
 .split('&')
@@ -80,14 +79,17 @@ function drawPlayListsTable(PlayLists) {
     var row = document.createElement("tr");
  
   //  for (var j = 0; j < 2; j++) {
-      var cell = document.createElement("td");
+      var cell1 = document.createElement("td");
       var cellText = document.createTextNode(PlayLists[i].name);
-      cell.appendChild(cellText);
-      row.appendChild(cell);
+      cell1.appendChild(cellText);
+      row.appendChild(cell1);
 	  var button   = document.createElement("button");
 	  button.onclick = displaySongs;
 	  var buttonText = document.createTextNode("Display Songs");
 	  button.appendChild(buttonText);
+	  var cell2 = document.createElement("td");
+      cell2.appendChild(button);
+      row.appendChild(cell2);
 	  
   //  }
  
