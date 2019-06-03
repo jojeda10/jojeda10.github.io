@@ -85,6 +85,7 @@ function drawPlayListsTable(PlayLists) {
       row.appendChild(cell1);
 	  var button   = document.createElement("button");
 	  button.id = PlayLists[i].id;
+	  button.data-token = this._accessToken;
 	  button.onclick = displayTracks;
 	  var buttonText = document.createTextNode("Display Songs");
 	  button.appendChild(buttonText);
