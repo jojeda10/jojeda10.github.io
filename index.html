@@ -95,10 +95,14 @@ function removeTrack(track) {
 
 
 function drawPlayListsTable(PlayLists) {
-  document.getElementById('PlayListsTable').remove();
+  var table = document.getElementById('PlayListsTable');
+  if (table) {
+  table.remove();
+  }
+  
   PlayLists.map( function(list) {
   var body = document.getElementsByTagName("body")[0];
-  var table   = document.createElement("table");
+  table   = document.createElement("table");
   table.id = 'PlayListsTable';
   var tblBody = document.createElement("tbody");
 
