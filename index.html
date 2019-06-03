@@ -56,14 +56,14 @@ function getPlayLists() {
 }
 
 function displayTracks(playlist) {
-  this_.playListId = playlist.currentTarget.id;
+  this._playListId = playlist.currentTarget.id;
   $.ajax({
     url: 'https://api.spotify.com/v1/playlists/' + playlist.currentTarget.id + '/tracks ',
     headers: {
       'Authorization': 'Bearer ' + playlist.currentTarget.token
     },
     success: function(response) {
-	 drawTracksTable(response.items, this_.playListId);
+	 drawTracksTable(response.items, this._playListId);
     }
   });
 }
