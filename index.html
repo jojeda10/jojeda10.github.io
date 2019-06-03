@@ -84,6 +84,7 @@ function removeTrack(track) {
     url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks',
 	type: 'DELETE',
 	data: JSON.stringify(tracks)
+	dataType:'json',
     headers: {
       'Authorization': 'Bearer ' + track.currentTarget.token,
 	  'Content-Type': 'application/json'
