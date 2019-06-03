@@ -115,7 +115,7 @@ function drawPlayListsTable(PlayLists) {
 
 function drawTracksTable(Tracks) {
 
-    Tracks.map( function(list) {
+  //  Tracks.map( function(list) {
   var body = document.getElementsByTagName("body")[0];
   var table   = document.createElement("table");
   var tblBody = document.createElement("tbody");
@@ -128,7 +128,7 @@ function drawTracksTable(Tracks) {
       cell1.appendChild(cellText);
       row.appendChild(cell1);
 	  var button   = document.createElement("button");
-	  button.id = Tracks[i].id;
+	  button.id = Tracks[i].track.id;
 	  button.token = this._accessToken;
 	  button.onclick = removeTrack;
 	  var buttonText = document.createTextNode("Remove");
@@ -143,7 +143,7 @@ function drawTracksTable(Tracks) {
   body.appendChild(table);
   table.setAttribute("border", "2");  
   
-    });
+ //   });
 }
 
 
