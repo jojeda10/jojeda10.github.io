@@ -82,8 +82,11 @@ function removeTrack(track) {
 
 
   $.ajax({
-    url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks' + $.param({params}),
+    url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks',
 	type: 'DELETE',
+	data: params,
+	contentType:'application/json',
+	dataType: 'text',
     headers: {
       'Authorization': 'Bearer ' + track.currentTarget.token
     },
