@@ -86,7 +86,7 @@ function removeTrack(track) {
 	type: 'DELETE',
 	postData: params,
     headers: {
-      'Authorization': 'Bearer ' + track.currentTarget.token
+      'Authorization': 'Bearer ' + track.currentTarget.token,
 	  'Content-Type': 'application/json'
     },
     success: function(response) {
