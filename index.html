@@ -58,7 +58,7 @@ function getPlayLists() {
 function displayTracks(playlist) {
 debugger;
   $.ajax({
-    url: '/v1/playlists/' + playlist.currentTarget.id + '/tracks ',
+    url: 'https://api.spotify.com/v1/me/playlists/' + playlist.currentTarget.id + '/tracks ',
     headers: {
       'Authorization': 'Bearer ' + this._accessToken
     },
