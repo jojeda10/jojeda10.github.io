@@ -69,7 +69,7 @@ function displayTracks(playlist) {
 }
 
 function removeTrack(track) {
-
+this._trackId = track.currentTarget.id;
    var params = {
     tracks: [
         {
@@ -88,7 +88,7 @@ function removeTrack(track) {
 	  'Content-Type': 'application/json'
     },
 	success: jQuery.proxy(function(response) {
-     var button = document.getElementById(track.currentTarget.id);
+     var button = document.getElementById(this._trackId);
 	 button.click();
 	}, this),
   });
