@@ -2,16 +2,12 @@
 
 <!-- <body onload="initializeVariables()"> -->
 <body  onload="init()">
- <button onclick="login()">Login</button>
  <button onclick="getPlayLists()">Listar playlists</button> 
-
+ 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script>
 
-
-
 function init() {
-
 const hash = window.location.hash
 .substring(1)
 .split('&')
@@ -30,14 +26,13 @@ this._accessToken = hash.access_token;
 
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
-// Replace with your app's client ID, redirect URI and desired scopes
+
 const clientId = '52f9e97b6df9462c9f239085ffb73145';
-const redirectUri = 'https://jojeda10.github.io'; //encodeURI(window.location.href);
+const redirectUri = 'https://jojeda10.github.io';
 const scopes = [
   'user-top-read'
 ];
 
-// If there is no token, redirect to Spotify authorization
 if (!_token) {
   window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
 }
@@ -49,7 +44,6 @@ function initializeVariables() {
 }
 
 function getPlayLists() {
-  debugger;
   $.ajax({
     url: 'https://api.spotify.com/v1/me/playlists ',
     headers: {
@@ -61,39 +55,42 @@ function getPlayLists() {
   });
 }
 
-function displaySongs(playlist) {
+function displayTracks(playlist) {
 debugger;
+  $.ajax({
+    url: '/v1/playlists/' + playlist.currentTarget.id + '/tracks ',
+    headers: {
+      'Authorization': 'Bearer ' + this._accessToken
+    },
+    success: function(response) {
+	 drawTracksTable(response.items);
+    }
+  });
+
 }
 
 function drawPlayListsTable(PlayLists) {
-  debugger;
-    PlayLists.map( function(list) {
-	
 
+    PlayLists.map( function(list) {
   var body = document.getElementsByTagName("body")[0];
   var table   = document.createElement("table");
   var tblBody = document.createElement("tbody");
-  
 
   for (var i = 0; i < PlayLists.length; i++) {
     var row = document.createElement("tr");
- 
-  //  for (var j = 0; j < 2; j++) {
+
       var cell1 = document.createElement("td");
       var cellText = document.createTextNode(PlayLists[i].name);
       cell1.appendChild(cellText);
       row.appendChild(cell1);
 	  var button   = document.createElement("button");
 	  button.id = PlayLists[i].id;
-	  button.onclick = displaySongs;
+	  button.onclick = displayTracks;
 	  var buttonText = document.createTextNode("Display Songs");
 	  button.appendChild(buttonText);
 	  var cell2 = document.createElement("td");
       cell2.appendChild(button);
       row.appendChild(cell2);
-	  
-  //  }
- 
     tblBody.appendChild(row);
   }
  
@@ -103,6 +100,40 @@ function drawPlayListsTable(PlayLists) {
   
     });
 }
+
+function drawTracksTable(Tracks) {
+
+    Tracks.map( function(list) {
+  var body = document.getElementsByTagName("body")[0];
+  var table   = document.createElement("table");
+  var tblBody = document.createElement("tbody");
+
+  for (var i = 0; i < Tracks.length; i++) {
+    var row = document.createElement("tr");
+
+      var cell1 = document.createElement("td");
+      var cellText = document.createTextNode(Tracks[i].name);
+      cell1.appendChild(cellText);
+      row.appendChild(cell1);
+	  var button   = document.createElement("button");
+	  button.id = Tracks[i].id;
+	  button.onclick = displaySongs;
+	  var buttonText = document.createTextNode("Remove");
+	  button.appendChild(buttonText);
+	  var cell2 = document.createElement("td");
+      cell2.appendChild(button);
+      row.appendChild(cell2);
+    tblBody.appendChild(row);
+  }
+ 
+  table.appendChild(tblBody);
+  body.appendChild(table);
+  table.setAttribute("border", "2");  
+  
+    });
+}
+
+
 
 
 
