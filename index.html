@@ -68,15 +68,16 @@ function createPlaylist() {
 
 	
   $.ajax({
-    url: 'https://api.spotify.com/v1/users/' + this._userId + '/playlists',
+    url: 'https://api.spotify.com/v1/users/' + encodeURIComponent(this._userId) + '/playlists',
 	data: JSON.stringify(params),
+	type: 'POST',
 	dataType:'json',
     headers: {
       'Authorization': 'Bearer ' + this._accessToken,
 	  'Content-Type': 'application/json'
     },
     success: function(response) {
-	 drawPlayListsTable(response.items);
+	 debugger;
     }
   });
 }
