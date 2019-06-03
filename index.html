@@ -54,7 +54,7 @@ if (!_token) {
 	  'Content-Type': 'application/json'
     },
 	success: jQuery.proxy(function(response) {
-		debugger;
+		this._userId = response.id;
 	}, this),
   });
 }
@@ -68,7 +68,7 @@ function createPlaylist() {
 
 	
   $.ajax({
-    url: 'https://api.spotify.com/v1/users/' + + '/playlists',
+    url: 'https://api.spotify.com/v1/users/' + this._userId + '/playlists',
 	data: JSON.stringify(params),
 	dataType:'json',
     headers: {
