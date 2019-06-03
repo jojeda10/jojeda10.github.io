@@ -70,7 +70,6 @@ function displayTracks(playlist) {
 
 function removeTrack(track) {
 
-
    var params = {
     tracks: [
         {
@@ -78,7 +77,6 @@ function removeTrack(track) {
         }
     ]
  }
-
 
   $.ajax({
     url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks',
@@ -96,13 +94,12 @@ function removeTrack(track) {
 };
 
 
-
-
 function drawPlayListsTable(PlayLists) {
-
-    PlayLists.map( function(list) {
+  document.getElementById('PlayListsTable').remove();
+  PlayLists.map( function(list) {
   var body = document.getElementsByTagName("body")[0];
   var table   = document.createElement("table");
+  table.id = 'PlayListsTable';
   var tblBody = document.createElement("tbody");
 
   for (var i = 0; i < PlayLists.length; i++) {
