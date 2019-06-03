@@ -137,7 +137,7 @@ function drawTracksTable(Tracks, PlayListId) {
 	  var button   = document.createElement("button");
 	  button.id = PlayListId;
 	  button.token = this._accessToken;
-	  button.token = Tracks[i].track.uri;
+	  button.uri = Tracks[i].track.uri;
 	  button.onclick = removeTrack;
 	  var buttonText = document.createTextNode("Remove");
 	  button.appendChild(buttonText);
