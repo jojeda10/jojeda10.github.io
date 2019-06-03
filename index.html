@@ -87,9 +87,10 @@ function removeTrack(track) {
       'Authorization': 'Bearer ' + track.currentTarget.token,
 	  'Content-Type': 'application/json'
     },
-    success: function(response) {
-	debugger;
-    }
+	success: jQuery.proxy(function(response) {
+     var button = document.getElementById(track.currentTarget.id);
+	 button.click();
+	}, this),
   });
 };
 
