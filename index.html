@@ -101,6 +101,11 @@ function drawPlayListsTable(PlayLists) {
   table.remove();
   }
   
+ table = document.getElementById('TracksTable');
+  if (table) {
+  table.remove();
+  }
+  
   var body = document.getElementsByTagName("body")[0];
   table   = document.createElement("table");
   table.id = 'PlayListsTable';
