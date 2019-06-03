@@ -60,7 +60,7 @@ debugger;
   $.ajax({
     url: 'https://api.spotify.com/v1/me/playlists/' + playlist.currentTarget.id + '/tracks ',
     headers: {
-      'Authorization': 'Bearer ' + this._accessToken
+      'Authorization': 'Bearer ' + playlist.currentTarget.token
     },
     success: function(response) {
 	 drawTracksTable(response.items);
