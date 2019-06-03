@@ -56,7 +56,6 @@ function getPlayLists() {
 }
 
 function displayTracks(playlist) {
-debugger;
   $.ajax({
     url: 'https://api.spotify.com/v1/playlists/' + playlist.currentTarget.id + '/tracks ',
     headers: {
@@ -66,7 +65,19 @@ debugger;
 	 drawTracksTable(response.items);
     }
   });
+}
 
+function removeTrack(playlist) {
+  $.ajax({
+    url: 'https://api.spotify.com/v1/playlists/' + playlist.currentTarget.id + '/tracks ',
+	type: 'DELETE',
+    headers: {
+      'Authorization': 'Bearer ' + playlist.currentTarget.token
+    },
+    success: function(response) {
+	debugger;
+    }
+  });
 }
 
 function drawPlayListsTable(PlayLists) {
@@ -113,12 +124,13 @@ function drawTracksTable(Tracks) {
     var row = document.createElement("tr");
 
       var cell1 = document.createElement("td");
-      var cellText = document.createTextNode(Tracks[i].name);
+      var cellText = document.createTextNode(Tracks[i].track.name);
       cell1.appendChild(cellText);
       row.appendChild(cell1);
 	  var button   = document.createElement("button");
 	  button.id = Tracks[i].id;
-	  button.onclick = displaySongs;
+	  button.token = this._accessToken;
+	  button.onclick = removeTrack;
 	  var buttonText = document.createTextNode("Remove");
 	  button.appendChild(buttonText);
 	  var cell2 = document.createElement("td");
