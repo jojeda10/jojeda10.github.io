@@ -62,9 +62,9 @@ function displayTracks(playlist) {
     headers: {
       'Authorization': 'Bearer ' + playlist.currentTarget.token
     },
-    success: function(response) {
-	 drawTracksTable(response.items, this._playListId);
-    }
+	success: jQuery.proxy(function(response) {
+     drawTracksTable(response.items, this._playListId);
+	}, this),
   });
 }
 
