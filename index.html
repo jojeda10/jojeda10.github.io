@@ -57,10 +57,13 @@ function getPlayLists() {
       'Authorization': 'Bearer ' + this._accessToken
     },
     success: function(response) {
-	debugger;
 	 drawPlayListsTable(response.items);
     }
   });
+}
+
+function displaySongs() {
+debugger;
 }
 
 function drawPlayListsTable(PlayLists) {
@@ -76,12 +79,17 @@ function drawPlayListsTable(PlayLists) {
   for (var i = 0; i < PlayLists.length; i++) {
     var row = document.createElement("tr");
  
-    for (var j = 0; j < 2; j++) {
+  //  for (var j = 0; j < 2; j++) {
       var cell = document.createElement("td");
-      var cellText = document.createTextNode("cell en la row "+i+", columna "+j);
+      var cellText = document.createTextNode(PlayLists[i].name);
       cell.appendChild(cellText);
       row.appendChild(cell);
-    }
+	  var button   = document.createElement("button");
+	  button.onclick = displaySongs;
+	  var buttonText = document.createTextNode("Display Songs");
+	  button.appendChild(buttonText);
+	  
+  //  }
  
     tblBody.appendChild(row);
   }
