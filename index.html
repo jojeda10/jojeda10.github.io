@@ -1,8 +1,6 @@
 <html>
 
-
 <body  onload="init()">
-
  <form class="form-inline">
   <div class="form-group">
     <label for="name">Playlist name:</label>
@@ -11,217 +9,221 @@
   <button type="submit" class="btn btn-default" onclick="createPlaylist()">Create</button>
 </form> 
 
-
 <button onclick="getPlayLists()">Listar playlists</button> 
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script>
-
 function init() {
-const hash = window.location.hash
-.substring(1)
-.split('&')
-.reduce(function (initial, item) {
-  if (item) {
-    var parts = item.split('=');
-    initial[parts[0]] = decodeURIComponent(parts[1]);
-  }
-  return initial;
-}, {});
-window.location.hash = '';
+	/**
+	 * Este metodo es invocado al inciarse la aplicación. Redirige a la página de autenticación de Spotify con el fin de
+	 * obtener un token válido con el que poder interactuar con la API. Se basa en un Authorization Code Flow en el que 
+	 * se establecen los scopes necesarios
+	 */
+	const hash = window.location.hash
+		.substring(1)
+		.split('&')
+		.reduce(function (initial, item) {
+			if (item) {
+				var parts = item.split('=');
+				initial[parts[0]] = decodeURIComponent(parts[1]);
+			}
+			return initial;
+		}, {});
+	window.location.hash = '';
 
-// Set token
-let _token = hash.access_token;
-this._accessToken = hash.access_token;
+	let _token = hash.access_token;
+	this._accessToken = hash.access_token;
 
-const authEndpoint = 'https://accounts.spotify.com/authorize';
+	const authEndpoint = 'https://accounts.spotify.com/authorize';
 
+	const clientId = '52f9e97b6df9462c9f239085ffb73145';
+	const redirectUri = 'https://jojeda10.github.io';
+	const scopes = [
+		'user-top-read', 'playlist-read-private', 'playlist-modify-public', 'playlist-modify-private', 'playlist-read-collaborative'
+	];
 
-const clientId = '52f9e97b6df9462c9f239085ffb73145';
-const redirectUri = 'https://jojeda10.github.io';
-const scopes = [
-  'user-top-read', 'playlist-read-private', 'playlist-modify-public', 'playlist-modify-private', 'playlist-read-collaborative'
-];
-
-if (!_token) {
-  window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
-} else {
-  $.ajax({
-    url: 'https://api.spotify.com/v1/me',
-	dataType:'json',
-    headers: {
-      'Authorization': 'Bearer ' + _token,
-	  'Content-Type': 'application/json'
-    },
-	success: jQuery.proxy(function(response) {
-		this._userId = response.id;
-	}, this),
-  });
+	if (!_token) {
+		window.location =
+			`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
+	} else {
+		$.ajax({
+			url: 'https://api.spotify.com/v1/me',
+			dataType: 'json',
+			headers: {
+				'Authorization': 'Bearer ' + _token,
+				'Content-Type': 'application/json'
+			},
+			success: jQuery.proxy(function (response) {
+				this._userId = response.id;
+			}, this),
+		});
+	}
 }
-}
 
+/**
+ * Event handler para crear una playlist
+ */
 function createPlaylist() {
 
-   var params = {
-            name: document.getElementById("name").value
-        }
+	var params = {
+		name: document.getElementById("name").value
+	}
 
-	
-  $.ajax({
-    url: 'https://api.spotify.com/v1/users/' + encodeURIComponent(this._userId) + '/playlists',
-	type: 'POST',
-	data: JSON.stringify(params),
-	dataType:'json',
-    headers: {
-      'Authorization': 'Bearer ' + this._accessToken,
-	  'Content-Type': 'application/json'
-    },
-    success: function(response) {
-	 debugger;
-    }
-  });
+	$.ajax({
+		url: 'https://api.spotify.com/v1/users/' + encodeURIComponent(this._userId) + '/playlists',
+		type: 'POST',
+		data: JSON.stringify(params),
+		dataType: 'json',
+		headers: {
+			'Authorization': 'Bearer ' + this._accessToken,
+			'Content-Type': 'application/json'
+		},
+		success: function (response) {
+			debugger;
+		}
+	});
 }
 
-function initializeVariables() {
- this._client_id = '52f9e97b6df9462c9f239085ffb73145';
-  this._client_secret = 'c6b9a2ca5d204d7983d4377566f9d8bf';
-}
-
+/**
+ * Event handler para obtener una playlist
+ */
 function getPlayLists() {
-  $.ajax({
-    url: 'https://api.spotify.com/v1/me/playlists ',
-    headers: {
-      'Authorization': 'Bearer ' + this._accessToken
-    },
-    success: function(response) {
-	 drawPlayListsTable(response.items);
-    }
-  });
+	$.ajax({
+		url: 'https://api.spotify.com/v1/me/playlists ',
+		headers: {
+			'Authorization': 'Bearer ' + this._accessToken
+		},
+		success: function (response) {
+			drawPlayListsTable(response.items);
+		}
+	});
 }
 
+/**
+ * Muestra una playlist
+ */
 function displayTracks(playlist) {
-  this._playListId = playlist.currentTarget.id;
-  $.ajax({
-    url: 'https://api.spotify.com/v1/playlists/' + playlist.currentTarget.id + '/tracks ',
-    headers: {
-      'Authorization': 'Bearer ' + playlist.currentTarget.token
-    },
-	success: jQuery.proxy(function(response) {
-     drawTracksTable(response.items, this._playListId);
-	}, this),
-  });
+	this._playListId = playlist.currentTarget.id;
+	$.ajax({
+		url: 'https://api.spotify.com/v1/playlists/' + playlist.currentTarget.id + '/tracks ',
+		headers: {
+			'Authorization': 'Bearer ' + playlist.currentTarget.token
+		},
+		success: jQuery.proxy(function (response) {
+			drawTracksTable(response.items, this._playListId);
+		}, this),
+	});
 }
 
+/**
+ * Método para eliminar una canción
+ */
 function removeTrack(track) {
-this._trackId = track.currentTarget.id;
-   var params = {
-    tracks: [
-        {
-            uri: track.currentTarget.uri
-        }
-    ]
- }
+	this._trackId = track.currentTarget.id;
+	var params = {
+		tracks: [{
+			uri: track.currentTarget.uri
+		}]
+	}
 
-  $.ajax({
-    url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks',
-	type: 'DELETE',
-	data: JSON.stringify(params),
-	dataType:'json',
-    headers: {
-      'Authorization': 'Bearer ' + track.currentTarget.token,
-	  'Content-Type': 'application/json'
-    },
-	success: jQuery.proxy(function(response) {
-     var button = document.getElementById(this._trackId);
-	 button.click();
-	}, this),
-  });
+	$.ajax({
+		url: 'https://api.spotify.com/v1/playlists/' + track.currentTarget.id + '/tracks',
+		type: 'DELETE',
+		data: JSON.stringify(params),
+		dataType: 'json',
+		headers: {
+			'Authorization': 'Bearer ' + track.currentTarget.token,
+			'Content-Type': 'application/json'
+		},
+		success: jQuery.proxy(function (response) {
+			var button = document.getElementById(this._trackId);
+			button.click();
+		}, this),
+	});
 };
 
-
+/**
+ * Dibuja la table de playlists
+ */
 function drawPlayListsTable(PlayLists) {
-  var table = document.getElementById('PlayListsTable');
-  if (table) {
-  table.remove();
-  }
-  
- table = document.getElementById('TracksTable');
-  if (table) {
-  table.remove();
-  }
-  
-  var body = document.getElementsByTagName("body")[0];
-  table   = document.createElement("table");
-  table.id = 'PlayListsTable';
-  var tblBody = document.createElement("tbody");
+	var table = document.getElementById('PlayListsTable');
+	if (table) {
+		table.remove();
+	}
 
-  for (var i = 0; i < PlayLists.length; i++) {
-    var row = document.createElement("tr");
+	table = document.getElementById('TracksTable');
+	if (table) {
+		table.remove();
+	}
 
-      var cell1 = document.createElement("td");
-      var cellText = document.createTextNode(PlayLists[i].name);
-      cell1.appendChild(cellText);
-      row.appendChild(cell1);
-	  var button   = document.createElement("button");
-	  button.id = PlayLists[i].id;
-	  button.token = this._accessToken;
-	  button.onclick = displayTracks;
-	  var buttonText = document.createTextNode("Display Songs");
-	  button.appendChild(buttonText);
-	  var cell2 = document.createElement("td");
-      cell2.appendChild(button);
-      row.appendChild(cell2);
-    tblBody.appendChild(row);
-  }
- 
-  table.appendChild(tblBody);
-  body.appendChild(table);
-  table.setAttribute("border", "2");  
-  
+	var body = document.getElementsByTagName("body")[0];
+	table = document.createElement("table");
+	table.id = 'PlayListsTable';
+	var tblBody = document.createElement("tbody");
+
+	for (var i = 0; i < PlayLists.length; i++) {
+		var row = document.createElement("tr");
+
+		var cell1 = document.createElement("td");
+		var cellText = document.createTextNode(PlayLists[i].name);
+		cell1.appendChild(cellText);
+		row.appendChild(cell1);
+		var button = document.createElement("button");
+		button.id = PlayLists[i].id;
+		button.token = this._accessToken;
+		button.onclick = displayTracks;
+		var buttonText = document.createTextNode("Display Songs");
+		button.appendChild(buttonText);
+		var cell2 = document.createElement("td");
+		cell2.appendChild(button);
+		row.appendChild(cell2);
+		tblBody.appendChild(row);
+	}
+
+	table.appendChild(tblBody);
+	body.appendChild(table);
+	table.setAttribute("border", "2");
+
 }
 
+/**
+ * Dibuja la table de canciones
+ */
 function drawTracksTable(Tracks, PlayListId) {
 
-  var table = document.getElementById('TracksTable');
-  if (table) {
-  table.remove();
-  }
-  var body = document.getElementsByTagName("body")[0];
-  table   = document.createElement("table");
-  table.id = 'TracksTable';
-  var tblBody = document.createElement("tbody");
+	var table = document.getElementById('TracksTable');
+	if (table) {
+		table.remove();
+	}
+	var body = document.getElementsByTagName("body")[0];
+	table = document.createElement("table");
+	table.id = 'TracksTable';
+	var tblBody = document.createElement("tbody");
 
-  for (var i = 0; i < Tracks.length; i++) {
-    var row = document.createElement("tr");
+	for (var i = 0; i < Tracks.length; i++) {
+		var row = document.createElement("tr");
 
-      var cell1 = document.createElement("td");
-      var cellText = document.createTextNode(Tracks[i].track.name);
-      cell1.appendChild(cellText);
-      row.appendChild(cell1);
-	  var button   = document.createElement("button");
-	  button.id = PlayListId;
-	  button.token = this._accessToken;
-	  button.uri = Tracks[i].track.uri;
-	  button.onclick = removeTrack;
-	  var buttonText = document.createTextNode("Remove");
-	  button.appendChild(buttonText);
-	  var cell2 = document.createElement("td");
-      cell2.appendChild(button);
-      row.appendChild(cell2);
-    tblBody.appendChild(row);
-  }
- 
-  table.appendChild(tblBody);
-  body.appendChild(table);
-  table.setAttribute("border", "2");  
-  
- //   });
+		var cell1 = document.createElement("td");
+		var cellText = document.createTextNode(Tracks[i].track.name);
+		cell1.appendChild(cellText);
+		row.appendChild(cell1);
+		var button = document.createElement("button");
+		button.id = PlayListId;
+		button.token = this._accessToken;
+		button.uri = Tracks[i].track.uri;
+		button.onclick = removeTrack;
+		var buttonText = document.createTextNode("Remove");
+		button.appendChild(buttonText);
+		var cell2 = document.createElement("td");
+		cell2.appendChild(button);
+		row.appendChild(cell2);
+		tblBody.appendChild(row);
+	}
+
+	table.appendChild(tblBody);
+	body.appendChild(table);
+	table.setAttribute("border", "2");
 }
-
-
-
-
-
 </script>
 </body>
 </html>
